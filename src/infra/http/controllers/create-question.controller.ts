@@ -1,16 +1,8 @@
-import {
-  Body,
-  Controller,
-  Post,
-  // Req,
-  UseGuards,
-} from '@nestjs/common'
+import { BadRequestException, Body, Controller, Post } from '@nestjs/common'
 // import { Request } from 'express'
 import { CurrentUser } from '@/infra/auth/current-user.decorator'
-import { JwTAuthGuard } from '@/infra/auth/jwt-auth.guard'
 import { UserTokenPayload } from '@/infra/auth/jwt.strategy'
 import { ZodValidationPipe } from '@/infra/http/pipes/zod-validation-pipe'
-import { PrismaService } from '@/infra/database/prisma/prisma.service'
 import { z } from 'zod'
 import { CreateQuestionUseCase } from '@/domain/forum/application/use-cases/create-question'
 
@@ -23,7 +15,6 @@ const bodyValidationPipe = new ZodValidationPipe(createQuestionBodySchema)
 type CreateQuestionBodySchema = z.infer<typeof createQuestionBodySchema>
 
 @Controller('/questions')
-@UseGuards(JwTAuthGuard)
 export class CreateQuestionController {
   constructor(private createQuestion: CreateQuestionUseCase) {}
 
@@ -34,11 +25,15 @@ export class CreateQuestionController {
     @CurrentUser() user: UserTokenPayload,
   ) {
     const { title, content } = body
-    await this.createQuestion.execute({
+    const result = await this.createQuestion.execute({
       authorId: user.sub,
       title,
       content,
       attachmentIds: [],
     })
+
+    if (result.isLeft()) {
+      throw new BadRequestException()
+    }
   }
 }
