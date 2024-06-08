@@ -33,8 +33,8 @@ export class PrismaQuestionsRepository implements QuestionsRepository {
     return questions.map(PrismaQuestionMapper.toDomain)
   }
 
-  async create(answer: Question): Promise<void> {
-    const data = PrismaQuestionMapper.toPrisma(answer)
+  async create(question: Question): Promise<void> {
+    const data = PrismaQuestionMapper.toPrisma(question)
 
     await this.prisma.question.create({ data })
   }
