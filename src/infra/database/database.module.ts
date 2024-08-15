@@ -9,6 +9,11 @@ import { QuestionsRepository } from '@/domain/forum/application/repositories/que
 import { StudentsRepository } from '@/domain/forum/application/repositories/students-repository'
 import { PrismaQuestionsRepository } from './prisma/repositories/prisma-questions-repository'
 import { PrismaStudentsRepository } from './prisma/repositories/prisma-students-repository'
+import { AnswersRepository } from '@/domain/forum/application/repositories/answers-repository'
+import { AnswerAttachmentsRepository } from '@/domain/forum/application/repositories/answer-attachments-repository'
+import { AnswerCommentsRepository } from '@/domain/forum/application/repositories/answer-comments-repository'
+import { QuestionAttachmentsRepository } from '@/domain/forum/application/repositories/question-attachments-repository'
+import { QuestionCommentsRepository } from '@/domain/forum/application/repositories/question-comments-repository'
 
 @Module({
   providers: [
@@ -17,11 +22,23 @@ import { PrismaStudentsRepository } from './prisma/repositories/prisma-students-
       provide: QuestionsRepository,
       useClass: PrismaQuestionsRepository,
     },
-    PrismaAnswersRepository,
-    PrismaQuestionAttachmentsRepository,
-    PrismaAnswerAttachmentsRepository,
-    PrismaQuestionCommentsRepository,
-    PrismaAnswerCommentsRepository,
+    { provide: AnswersRepository, useClass: PrismaAnswersRepository },
+    {
+      provide: QuestionAttachmentsRepository,
+      useClass: PrismaQuestionAttachmentsRepository,
+    },
+    {
+      provide: AnswerAttachmentsRepository,
+      useClass: PrismaAnswerAttachmentsRepository,
+    },
+    {
+      provide: QuestionCommentsRepository,
+      useClass: PrismaQuestionCommentsRepository,
+    },
+    {
+      provide: AnswerCommentsRepository,
+      useClass: PrismaAnswerCommentsRepository,
+    },
     {
       provide: StudentsRepository,
       useClass: PrismaStudentsRepository,
@@ -30,11 +47,11 @@ import { PrismaStudentsRepository } from './prisma/repositories/prisma-students-
   exports: [
     PrismaService,
     QuestionsRepository,
-    PrismaAnswersRepository,
-    PrismaQuestionAttachmentsRepository,
-    PrismaAnswerAttachmentsRepository,
-    PrismaQuestionCommentsRepository,
-    PrismaAnswerCommentsRepository,
+    AnswersRepository,
+    QuestionAttachmentsRepository,
+    AnswerAttachmentsRepository,
+    QuestionCommentsRepository,
+    AnswerCommentsRepository,
     StudentsRepository,
   ],
 })
