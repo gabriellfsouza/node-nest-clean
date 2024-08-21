@@ -8,7 +8,6 @@ export class GetQuestionBySlugController {
 
   @Get()
   async handle(@Param('slug') slug: string) {
-    console.log('test123', { test: 'use-case' })
     const result = await this.getQuestionBySlug.execute({ slug })
 
     if (result.isLeft()) {

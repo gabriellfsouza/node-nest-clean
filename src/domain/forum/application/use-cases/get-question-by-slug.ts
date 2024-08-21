@@ -22,7 +22,6 @@ export class GetQuestionBySlugUseCase {
   async execute({
     slug,
   }: GetQuestionBySlugUseCaseRequest): Promise<GetQuestionBySlugUseCaseResponse> {
-    console.log('test123', { test: 'use-case' })
     const question = await this.questionsRepository.findBySlug(slug)
 
     if (!question) {
