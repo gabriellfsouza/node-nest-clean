@@ -35,7 +35,7 @@ describe('Fetch Question Comments (E2E)', () => {
     await app.init()
   })
 
-  test('[GET] /questions/:questionId/answers', async () => {
+  test('[GET] /questions/:questionId/comments', async () => {
     const user = await studentFactory.makePrismaStudent({
       name: 'John Doe',
       email: 'UqJkz@example.com',
@@ -55,12 +55,12 @@ describe('Fetch Question Comments (E2E)', () => {
 
     await Promise.all([
       questionCommentFactory.makePrismaQuestionComment({
-        content: 'Answer 01',
+        content: 'Comment 01',
         authorId: user.id,
         questionId: question.id,
       }),
       questionCommentFactory.makePrismaQuestionComment({
-        content: 'Answer 02',
+        content: 'Comment 02',
         authorId: user.id,
         questionId: question.id,
       }),
@@ -74,8 +74,14 @@ describe('Fetch Question Comments (E2E)', () => {
     expect(response.statusCode).toBe(200)
     expect(response.body).toEqual({
       comments: expect.arrayContaining([
-        expect.objectContaining({ content: 'Answer 02' }),
-        expect.objectContaining({ content: 'Answer 01' }),
+        expect.objectContaining({
+          content: 'Comment 02',
+          authorName: 'John Doe',
+        }),
+        expect.objectContaining({
+          content: 'Comment 01',
+          authorName: 'John Doe',
+        }),
       ]),
     })
   })

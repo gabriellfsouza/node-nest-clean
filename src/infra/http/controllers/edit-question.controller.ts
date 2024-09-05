@@ -6,7 +6,6 @@ import {
   Param,
   Put,
 } from '@nestjs/common'
-// import { Request } from 'express'
 import { CurrentUser } from '@/infra/auth/current-user.decorator'
 import { UserTokenPayload } from '@/infra/auth/jwt.strategy'
 import { ZodValidationPipe } from '@/infra/http/pipes/zod-validation-pipe'

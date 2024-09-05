@@ -54,6 +54,7 @@ describe('Edit Answer (E2E)', () => {
       .set('Authorization', `Bearer ${accessToken}`)
       .send({
         content: 'New answer content',
+        attachments: [],
       })
 
     expect(response.statusCode).toBe(204)

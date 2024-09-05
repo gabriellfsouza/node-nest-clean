@@ -50,6 +50,7 @@ describe('Answer Question (E2E)', () => {
       .set('Authorization', `Bearer ${accessToken}`)
       .send({
         content: 'New answer',
+        attachments: [],
       })
 
     const answerOnDatabase = await prisma.answer.findFirst({
