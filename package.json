@@ -13,6 +13,7 @@
     "start:debug": "nest start --debug --watch",
     "start:prod": "node dist/main",
     "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
+    "typecheck": "tsc --noEmit",
     "compose:up": "docker-compose up -d",
     "compose:down": "docker-compose down",
     "migrate:dev": "prisma migrate dev",
