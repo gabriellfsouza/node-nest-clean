@@ -22,6 +22,16 @@ services:
       - 8080:8080
     networks:
       - nest-clean
-  
+
+  cache:
+    container_name: nest-clean-redis
+    image: redis
+    ports:
+      - 6379:6379
+    networks:
+      - nest-clean
+    volumes:
+      - ./data/redis:/data
+
 networks:
   nest-clean:
