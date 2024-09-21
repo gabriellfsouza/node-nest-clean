@@ -40,8 +40,14 @@ jobs:
         username: ${{ secrets.DOCKERHUB_USERNAME }}
         password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-    - name: Build docker image
-      run: docker build -t $GITHUB_REPOSITORY:${{ steps.generate_tag.outputs.sha }} .
+    - name: Build and push Docker image
+      uses: docker/build-push-action@v6
+      with:
+        push: true
+        tags: $GITHUB_REPOSITORY:${{ steps.generate_tag.outputs.sha }},$GITHUB_REPOSITORY:latest
 
-    - name: Push docker image
-      run: docker push $GITHUB_REPOSITORY:${{ steps.generate_tag.outputs.sha }}
+    # - name: Build docker image
+    #   run: docker build -t $GITHUB_REPOSITORY:${{ steps.generate_tag.outputs.sha }} .
+
+    # - name: Push docker image
+    #   run: docker push $GITHUB_REPOSITORY:${{ steps.generate_tag.outputs.sha }}
