@@ -44,7 +44,7 @@ jobs:
       uses: docker/build-push-action@v6
       with:
         push: true
-        tags: $GITHUB_REPOSITORY:${{ steps.generate_tag.outputs.sha }},$GITHUB_REPOSITORY:latest
+        tags: ${{ github.repository }}:${{ steps.generate_tag.outputs.sha }},${{ github.repository }}:latest
 
     # - name: Build docker image
     #   run: docker build -t $GITHUB_REPOSITORY:${{ steps.generate_tag.outputs.sha }} .
