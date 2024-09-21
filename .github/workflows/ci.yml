@@ -9,10 +9,9 @@ jobs:
   build:
     name: 'Build and Push'
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        # node-version: [16, 18, 20, 21, 21.6]
-        node-version: [21.6]
+    # strategy:
+    #   matrix:
+    #     node-version: [16, 18, 20, 21, 21.6]
 
     steps:
     - uses: actions/checkout@v4
@@ -20,9 +19,11 @@ jobs:
       with:
         version: 8.15.4
     - uses: actions/setup-node@v4
-      name: Setup node | ${{ matrix.node-version }}
+      # name: Setup node | ${{ matrix.node-version }}
+      name: Setup node 21.6
       with:
-        node-version: ${{ matrix.node-version }}
+        # node-version: ${{ matrix.node-version }}
+        node-version: 21.6
         cache: 'pnpm'
     - run: pnpm install
     - run: pnpm run prisma:generate
