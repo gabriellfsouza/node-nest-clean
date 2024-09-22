@@ -54,7 +54,7 @@ jobs:
     - name: Build and Push docker image
       env:
         REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-        REPOSITORY: ${{ github.repository }}
+        REPOSITORY: node-nest-clean
         TAG: ${{ steps.generate_tag.outputs.sha }}
       run: |
         docker build -t $REGISTRY/$REPOSITORY:$TAG .
