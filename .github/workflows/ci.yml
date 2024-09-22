@@ -18,18 +18,6 @@ jobs:
     #     node-version: [16, 18, 20, 21, 21.6]
 
     steps:
-    - name: Configure AWS credentials
-      uses: aws-actions/configure-aws-credentials@v4
-      with:
-        role-to-assume: '${{ secrets.AWS_ROLE_TO_ASSUME }}'
-        aws-region: '${{ secrets.AWS_REGION }}'
-        mask-aws-account-id: true
-
-    - name: Login to Amazon ECR
-      id: login-ecr
-      uses: aws-actions/amazon-ecr-login@v2
-      with:
-        mask-password: true
     - uses: actions/checkout@v4
     - uses: pnpm/action-setup@v2
       with:
@@ -50,4 +38,24 @@ jobs:
         SHA=$(echo $GITHUB_SHA | head -c7)
         echo "sha=$SHA" >> $GITHUB_OUTPUT
 
+    - name: Configure AWS credentials
+      uses: aws-actions/configure-aws-credentials@v4
+      with:
+        role-to-assume: '${{ secrets.AWS_ROLE_TO_ASSUME }}'
+        aws-region: '${{ secrets.AWS_REGION }}'
+        mask-aws-account-id: true
 
+    - name: Login to Amazon ECR
+      id: login-ecr
+      uses: aws-actions/amazon-ecr-login@v2
+      with:
+        mask-password: true
+
+    - name: Build and Push docker image
+      env:
+        REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+        REPOSITORY: ${{ github.repository }}
+        TAG: ${{ steps.generate_tag.outputs.sha }}
+      run: |
+        docker build -t $REGISTRY/$REPOSITORY:$TAG .
+        docker push $REGISTRY//$REPOSITORY:$TAG
