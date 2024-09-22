@@ -58,4 +58,4 @@ jobs:
         TAG: ${{ steps.generate_tag.outputs.sha }}
       run: |
         docker build -t $REGISTRY/$REPOSITORY:$TAG .
-        docker push $REGISTRY//$REPOSITORY:$TAG
+        docker push $REGISTRY/$REPOSITORY:$TAG
