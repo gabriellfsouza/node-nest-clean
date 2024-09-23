@@ -60,8 +60,6 @@ export class InMemoryQuestionsRepository implements QuestionsRepository {
       return attachment
     })
 
-    console.log({ attachments, questionAttachments })
-
     return QuestionDetails.create({
       questionId: question.id,
       authorId: question.authorId,

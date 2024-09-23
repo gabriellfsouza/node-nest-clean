@@ -31,7 +31,6 @@ export class EditAnswerController {
     @CurrentUser() user: UserTokenPayload,
     @Param('id') answerId: string,
   ) {
-    console.log({ body, user, answerId })
     const { content, attachments } = body
     const result = await this.editAnswer.execute({
       authorId: user.sub,
