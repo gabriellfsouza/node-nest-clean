@@ -3,7 +3,7 @@ import {
   Question as PrismaQuestion,
   User as PrismaUser,
   Attachment as PrismaAttachment,
-} from '.prisma/client'
+} from '@prisma/client'
 import { PrismaAttachmentMapper } from './prisma-attachment-mapper'
 import { QuestionDetails } from '@/domain/forum/enterprise/entities/value-objects/question-details'
 import { Slug } from '@/domain/forum/enterprise/entities/value-objects/slug'

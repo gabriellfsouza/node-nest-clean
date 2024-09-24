@@ -1,4 +1,4 @@
-import { PrismaClient } from '.prisma/client'
+import { PrismaClient } from '@prisma/client'
 import { randomUUID } from 'node:crypto'
 import { config } from 'dotenv'
 import { execSync } from 'node:child_process'

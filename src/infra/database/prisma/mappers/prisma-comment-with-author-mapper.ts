@@ -1,4 +1,4 @@
-import { Comment as PrismaComment, User as PrismaUser } from '.prisma/client'
+import { Comment as PrismaComment, User as PrismaUser } from '@prisma/client'
 import { CommentWithAuthor } from '@/domain/forum/enterprise/entities/value-objects/comment-with-author'
 import { UniqueEntityID } from '@/core/entities/unique-entity-id'
 
