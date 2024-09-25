@@ -42,9 +42,11 @@ import { StorageModule } from '../storage/storage.module'
 import { UploadAndCreateAttachmentUseCase } from '@/domain/forum/application/use-cases/upload-and-create-attachment'
 import { ReadNotificationController } from './controllers/read-notification.controller'
 import { ReadNotificationUseCase } from '@/domain/notification/application/use-case/read-notification'
+import { HealthModule } from '../checks/health.module'
+import { HealthController } from './controllers/health.controller'
 
 @Module({
-  imports: [DatabaseModule, CryptographyModule, StorageModule],
+  imports: [DatabaseModule, CryptographyModule, StorageModule, HealthModule],
   controllers: [
     CreateAccountController,
     AuthenticateController,
@@ -66,6 +68,7 @@ import { ReadNotificationUseCase } from '@/domain/notification/application/use-c
     FetchAnswerCommentsController,
     UploadAttachmentController,
     ReadNotificationController,
+    HealthController,
   ],
   providers: [
     CreateQuestionUseCase,
