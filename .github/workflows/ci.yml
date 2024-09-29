@@ -54,9 +54,6 @@ jobs:
     - run: pnpm run prisma:generate
     - run: pnpm run test
 
-    - name: DB Push
-      run: pnpm prisma migrate deploy
-
     - name: Semantic Release
       uses: cycjimmy/semantic-release-action@v4
       env:
