@@ -33,7 +33,8 @@ Authorization: Bearer {{authToken}}
 
 {
   "title": "[Sample - 1] Esta é a minha nova pergunta",
-  "content": "Conteúdo da minha nova pergunta"
+  "content": "Conteúdo da minha nova pergunta",
+  "attachments": []
 }
 
 ###

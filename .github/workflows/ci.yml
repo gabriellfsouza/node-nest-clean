@@ -14,7 +14,7 @@ permissions:
 jobs:
   build:
     name: 'Build and Push'
-    runs-on: ubuntu-latest
+    runs-on: self-linux
     # strategy:
     #   matrix:
     #     node-version: [16, 18, 20, 21, 21.6]
@@ -34,6 +34,9 @@ jobs:
     - run: pnpm install
     - run: pnpm run prisma:generate
     - run: pnpm run test
+
+    - name: DB Push
+      run: pnpm prisma migrate deploy
 
     - name: Semantic Release
       uses: cycjimmy/semantic-release-action@v4
@@ -73,17 +76,17 @@ jobs:
         IMAGE=$(echo $REGISTRY/$REPOSITORY:$TAG)
         echo "image=$IMAGE" >> $GITHUB_OUTPUT
 
-    - name: Deploy to APP Runner
-      uses: awslabs/amazon-app-runner-deploy@main
-      with:
-        service: node-nest-clean
-        image: ${{ steps.build-docker-image.outputs.image }}
-        access-role-arn: '${{ secrets.AWS_APP_RUNNER_ROLE }}'
-        region: '${{ secrets.AWS_REGION }}'
-        cpu: 0.5
-        memory: 1
-        port: 3333
-        wait-for-service-stability-seconds: 180
+    # - name: Deploy to APP Runner
+    #   uses: awslabs/amazon-app-runner-deploy@main
+    #   with:
+    #     service: node-nest-clean
+    #     image: ${{ steps.build-docker-image.outputs.image }}
+    #     access-role-arn: '${{ secrets.AWS_APP_RUNNER_ROLE }}'
+    #     region: '${{ secrets.AWS_REGION }}'
+    #     cpu: 0.5
+    #     memory: 1
+    #     port: 3333
+    #     wait-for-service-stability-seconds: 180
 
     - name: App Runner check
       run: echo "App Runner running... ${{ steps.deploy-to-app-runner.outputs.service-url }}"
