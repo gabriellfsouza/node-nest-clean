@@ -24,7 +24,7 @@ jobs:
         name: Setup node 21.6
         with:
           node-version: 21.6
-          cache: 'pnpm'
+          # cache: 'pnpm'
 
       - name: Restore cache node_modules
         uses: actions/cache@v3
