@@ -12,9 +12,28 @@ permissions:
   pull-requests: write
 
 jobs:
+
+  migrate:
+    runs-on: self-linux
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v2
+        with:
+          version: 8.15.4
+      - uses: actions/setup-node@v4
+        name: Setup node 21.6
+        with:
+          node-version: 21.6
+          cache: 'pnpm'
+      # - name: Install Dependencies
+      #   run: pnpm install
+      - name: Run Migrations
+        run: pnpm prisma migrate deploy
+    needs: build
+
   build:
     name: 'Build and Push'
-    runs-on: self-linux
+    runs-on: ubuntu-latest
     # strategy:
     #   matrix:
     #     node-version: [16, 18, 20, 21, 21.6]
