@@ -25,6 +25,14 @@ jobs:
         with:
           node-version: 21.6
           cache: 'pnpm'
+
+      - name: Restore cache node_modules
+        uses: actions/cache@v3
+        env:
+            cache-name: cache-node-modules
+        with:
+          path: ~/node_modules
+          key: pnpm-${{ hashFiles('./pnpm-lock.yaml') }}
       # - name: Install Dependencies
       #   run: pnpm install
       - name: Run Migrations
@@ -53,6 +61,14 @@ jobs:
     - run: pnpm install
     - run: pnpm run prisma:generate
     - run: pnpm run test
+
+    - name: Cache node_modules
+      uses: actions/cache@v3
+      env:
+          cache-name: cache-node-modules
+      with:
+        path: ~/node_modules
+        key: pnpm-${{ hashFiles('./pnpm-lock.yaml') }}
 
     - name: Semantic Release
       uses: cycjimmy/semantic-release-action@v4
