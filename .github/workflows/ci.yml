@@ -38,6 +38,7 @@ jobs:
       - name: Run Migrations
         env:
           DATABASE_URL: "${{ secrets.DATABASE_URL }}"
+          PRISMA_LOG_LEVEL: "error"
         run: pnpm prisma migrate deploy
     needs: build
 
