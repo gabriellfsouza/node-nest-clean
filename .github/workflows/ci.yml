@@ -65,6 +65,7 @@ jobs:
       with:
         path: ~/node_modules
         key: pnpm-${{ hashFiles('./pnpm-lock.yaml') }}
+        restore-keys: pnpm-${{ hashFiles('./pnpm-lock.yaml') }}
 
     - run: pnpm install
     - run: pnpm run prisma:generate
