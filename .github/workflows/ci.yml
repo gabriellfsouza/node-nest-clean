@@ -36,6 +36,8 @@ jobs:
       # - name: Install Dependencies
       #   run: pnpm install
       - name: Run Migrations
+        env:
+          DATABASE_URL: "${{ secrets.DATABASE_URL }}"
         run: pnpm prisma migrate deploy
     needs: build
 
