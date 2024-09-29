@@ -31,7 +31,7 @@ jobs:
         # env:
         #     cache-name: cache-node-modules
         with:
-          path: ~/node_modules
+          path: ./node_modules
           key: pnpm-${{ hashFiles('./pnpm-lock.yaml') }}
       # - name: Install Dependencies
       #   run: pnpm install
@@ -63,7 +63,7 @@ jobs:
       # env:
       #     cache-name: cache-node-modules
       with:
-        path: ~/node_modules
+        path: ./node_modules
         key: pnpm-${{ hashFiles('./pnpm-lock.yaml') }}
         restore-keys: pnpm-${{ hashFiles('./pnpm-lock.yaml') }}
 
