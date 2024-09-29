@@ -58,10 +58,6 @@ jobs:
         # node-version: ${{ matrix.node-version }}
         node-version: 21.6
         cache: 'pnpm'
-    - run: pnpm install
-    - run: pnpm run prisma:generate
-    - run: pnpm run test
-
     - name: Cache node_modules
       uses: actions/cache@v3
       # env:
@@ -69,6 +65,11 @@ jobs:
       with:
         path: ~/node_modules
         key: pnpm-${{ hashFiles('./pnpm-lock.yaml') }}
+
+    - run: pnpm install
+    - run: pnpm run prisma:generate
+    - run: pnpm run test
+
 
     # - name: Semantic Release
     #   uses: cycjimmy/semantic-release-action@v4
