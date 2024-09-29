@@ -20,16 +20,16 @@ jobs:
       - uses: pnpm/action-setup@v2
         with:
           version: 8.15.4
-      - uses: actions/setup-node@v4
-        name: Setup node 21.6
-        with:
-          node-version: 21.6
-          cache: 'pnpm'
+      # - uses: actions/setup-node@v4
+      #   name: Setup node 21.6
+      #   with:
+      #     node-version: 21.6
+      #     cache: 'pnpm'
 
       - name: Restore cache node_modules
         uses: actions/cache@v3
-        env:
-            cache-name: cache-node-modules
+        # env:
+        #     cache-name: cache-node-modules
         with:
           path: ~/node_modules
           key: pnpm-${{ hashFiles('./pnpm-lock.yaml') }}
@@ -64,49 +64,49 @@ jobs:
 
     - name: Cache node_modules
       uses: actions/cache@v3
-      env:
-          cache-name: cache-node-modules
+      # env:
+      #     cache-name: cache-node-modules
       with:
         path: ~/node_modules
         key: pnpm-${{ hashFiles('./pnpm-lock.yaml') }}
 
-    - name: Semantic Release
-      uses: cycjimmy/semantic-release-action@v4
-      env:
-        GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+    # - name: Semantic Release
+    #   uses: cycjimmy/semantic-release-action@v4
+    #   env:
+    #     GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
 
-    - name: Generate Tag
-      id: generate_tag
-      run: |
-        SHA=$(echo $GITHUB_SHA | head -c7)
-        echo "sha=$SHA" >> $GITHUB_OUTPUT
+    # - name: Generate Tag
+    #   id: generate_tag
+    #   run: |
+    #     SHA=$(echo $GITHUB_SHA | head -c7)
+    #     echo "sha=$SHA" >> $GITHUB_OUTPUT
 
-    - name: Configure AWS credentials
-      uses: aws-actions/configure-aws-credentials@v4
-      with:
-        role-to-assume: '${{ secrets.AWS_ROLE_TO_ASSUME }}'
-        aws-region: '${{ secrets.AWS_REGION }}'
-        mask-aws-account-id: true
+    # - name: Configure AWS credentials
+    #   uses: aws-actions/configure-aws-credentials@v4
+    #   with:
+    #     role-to-assume: '${{ secrets.AWS_ROLE_TO_ASSUME }}'
+    #     aws-region: '${{ secrets.AWS_REGION }}'
+    #     mask-aws-account-id: true
 
-    - name: Login to Amazon ECR
-      id: login-ecr
-      uses: aws-actions/amazon-ecr-login@v2
-      with:
-        mask-password: true
+    # - name: Login to Amazon ECR
+    #   id: login-ecr
+    #   uses: aws-actions/amazon-ecr-login@v2
+    #   with:
+    #     mask-password: true
 
-    - name: Build and Push docker image
-      id: build-docker-image
-      env:
-        REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-        REPOSITORY: node-nest-clean
-        TAG: ${{ steps.generate_tag.outputs.sha }}
-      run: |
-        docker build -t $REGISTRY/$REPOSITORY:$TAG .
-        docker push $REGISTRY/$REPOSITORY:$TAG
-        docker tag $REGISTRY/$REPOSITORY:$TAG $REGISTRY/$REPOSITORY:latest
-        docker push $REGISTRY/$REPOSITORY:latest
-        IMAGE=$(echo $REGISTRY/$REPOSITORY:$TAG)
-        echo "image=$IMAGE" >> $GITHUB_OUTPUT
+    # - name: Build and Push docker image
+    #   id: build-docker-image
+    #   env:
+    #     REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+    #     REPOSITORY: node-nest-clean
+    #     TAG: ${{ steps.generate_tag.outputs.sha }}
+    #   run: |
+    #     docker build -t $REGISTRY/$REPOSITORY:$TAG .
+    #     docker push $REGISTRY/$REPOSITORY:$TAG
+    #     docker tag $REGISTRY/$REPOSITORY:$TAG $REGISTRY/$REPOSITORY:latest
+    #     docker push $REGISTRY/$REPOSITORY:latest
+    #     IMAGE=$(echo $REGISTRY/$REPOSITORY:$TAG)
+    #     echo "image=$IMAGE" >> $GITHUB_OUTPUT
 
     # - name: Deploy to APP Runner
     #   uses: awslabs/amazon-app-runner-deploy@main
