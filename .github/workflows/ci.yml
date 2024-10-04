@@ -122,6 +122,7 @@ jobs:
         with:
           aws-region: ${{ secrets.AWS_REGION }}
           role-to-assume:  ${{ secrets.AWS_APP_RUNNER_ROLE }}
+          mask-aws-account-id: true
 
       - name: Deploy to APP Runner
         run: aws apprunner update-service --service-arn ${{ secrets.AWS_APP_RUNNER_ARN }} --source-configuration ImageRepository="{ImageIdentifier=${{ steps.build-docker-image.outputs.image }},ImageRepositoryType=ECR}" --no-cli-pager > /dev/null 2>&1
