@@ -1,6 +1,8 @@
 @baseUrl = http://localhost:3333
 @authToken = {{authenticate.response.body.access_token}}
 
+@questionSlug = {{fetch_recent_questions.response.body.questions.0.slug}}
+
 # @name create_account
 POST {{baseUrl}}/accounts
 Content-Type: application/json
@@ -46,6 +48,14 @@ Content-Type: application/json
 Authorization: Bearer {{authToken}}
 
 ###
+
+# @name get_quetion
+GET {{baseUrl}}/questions/{{questionSlug}}
+Content-Type: application/json
+Authorization: Bearer {{authToken}}
+
+###
+
 
 # @name health_check
 GET {{baseUrl}}/health
