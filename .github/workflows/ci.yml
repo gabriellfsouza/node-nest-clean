@@ -67,13 +67,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Configure aws credentials
-        uses: aws-actions/configure-aws-credentials@v4
-        with:
-          aws-region: ${{ secrets.AWS_REGION }}
-          # role-to-assume:  ${{ secrets.AWS_APP_RUNNER_ROLE }}
-
-
       - uses: pnpm/action-setup@v2
         with:
           version: 8.15.4
@@ -98,6 +91,13 @@ jobs:
           SHA=$(echo $GITHUB_SHA | head -c7)
           echo "sha=$SHA" >> $GITHUB_OUTPUT
 
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: '${{ secrets.AWS_ROLE_TO_ASSUME }}'
+          aws-region: '${{ secrets.AWS_REGION }}'
+          mask-aws-account-id: true
+
       - name: Login to Amazon ECR
         id: login-ecr
         uses: aws-actions/amazon-ecr-login@v2
@@ -117,24 +117,11 @@ jobs:
           IMAGE=$(echo $REGISTRY/$REPOSITORY:$TAG)
           echo "image=$IMAGE" >> $GITHUB_OUTPUT
 
-      - name: Configure AWS credentials
+      - name: Configure aws credentials
         uses: aws-actions/configure-aws-credentials@v4
         with:
-          role-to-assume: '${{ secrets.AWS_ROLE_TO_ASSUME }}'
-          aws-region: '${{ secrets.AWS_REGION }}'
-          mask-aws-account-id: true
-
-      # - name: Assume role
-      #   id: assume-role
-      #   run: |
-      #     ROLE_ARN="${{ secrets.AWS_APP_RUNNER_ROLE }}"
-      #     SESSION_NAME="github-actions-session"
-      #     CREDS=$(aws sts assume-role --role-arn ${{ secrets.AWS_APP_RUNNER_ROLE }} --role-session-name $SESSION_NAME)
-      #     echo "AWS_ACCESS_KEY_ID=$(echo $CREDS | jq -r '.Credentials.AccessKeyId')" >> $GITHUB_ENV
-      #     echo "AWS_SECRET_ACCESS_KEY=$(echo $CREDS | jq -r '.Credentials.SecretAccessKey')" >> $GITHUB_ENV
-      #     echo "AWS_SESSION_TOKEN=$(echo $CREDS | jq -r '.Credentials.SessionToken')" >> $GITHUB_ENV
-
-
+          aws-region: ${{ secrets.AWS_REGION }}
+          role-to-assume:  ${{ secrets.AWS_APP_RUNNER_ROLE }}
 
       - name: Deploy to APP Runner
         run: aws apprunner update-service --service-arn ${{ secrets.AWS_APP_RUNNER_ARN }} --source-configuration ImageRepository="{ImageIdentifier=${{ steps.build-docker-image.outputs.image }},ImageRepositoryType=ECR}" --no-cli-pager > /dev/null 2>&1
